@@ -32,4 +32,3 @@ These aspects are usually related. For example, speed and fidelity, the faster t
 
 The ability to test the app is related with the app architecture. It's hard to create unit tests for a method witch has all logic of the application. A good practice is to break the application logic in multiple methods an classes, making easier to test each method. Architecture is a good way to divide up and organize your code
 
-.
