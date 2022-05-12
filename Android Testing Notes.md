@@ -32,3 +32,21 @@ These aspects are usually related. For example, speed and fidelity, the faster t
 
 The ability to test the app is related with the app architecture. It's hard to create unit tests for a method which has all logic of the application. A good practice is to break the application logic in multiple methods an classes, making easier to test each method. Architecture is a good way to divide up and organize your code
 
+### Launch and Test a Fragment
+
+Fragments are visual and make up  the user interface. Because of this, when testing them, it helps to  render them on a screen, as they would when the app is running. Thus  when testing fragments, you usually write instrumented tests, which live in the `androidTest` source set.
+
+**Annotations**
+
+- **@MediumTest** Marks the test as a "medium run-time" integration test (versus  @SmallTest unit tests and  @LargeTest end-to-end tests). This helps you group and choose which size of test to run.
+
+- **@RunWith(AndroidJUnit4::class)** - Used in any class using AndroidX Test.
+
+**FragmentScenario** is a class from AndroidX Test that gives you control over thr fragment's lifecycle for testing
+
+**ServiceLocator**
+
+To write a fragment and view model integration test it's not possible to use constructor dependency injection, since fragments and activities are classes that you don't construct and don't have access to the constructor.
+
+For this you can use ServiceLocator pattern that involves creating a singleton class called the "Service Locator", whose purpose is to provide dependencies, both for the regular and test code.
+
