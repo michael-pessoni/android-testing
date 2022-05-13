@@ -50,3 +50,19 @@ To write a fragment and view model integration test it's not possible to use con
 
 For this you can use ServiceLocator pattern that involves creating a singleton class called the "Service Locator", whose purpose is to provide dependencies, both for the regular and test code.
 
+### Testing UI with Espresso
+
+Espresso is a library that allows you to test state expectations, interactions and assertions clearly without the distraction of boilerplate content, custom infrastructure, or messy implementation details getting in the way.
+
+Espresso helps you:
+
+- Interact with views, like clicking buttons, sliding a bar, or scrolling down a screen.
+- Assert that certain views are on screen or are in a certain state  (such as containing particular text, or that a checkbox is checked,  etc.)
+
+**Statement parts**
+
+- **Static Espresso method** starts an Espresso statement. For example "onView"
+- **ViewMatcher** a matcher that matches a view. E.g. "withId"
+- **ViewAction** is something that can be done to the view. E.g. "perform"
+- **ViewAssertion** check or assert something about the view. E.g. "check"
+
