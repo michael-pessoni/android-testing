@@ -39,8 +39,9 @@ Fragments are visual and make up  the user interface. Because of this, when test
 **Annotations**
 
 - **@MediumTest** Marks the test as a "medium run-time" integration test (versus  @SmallTest unit tests and  @LargeTest end-to-end tests). This helps you group and choose which size of test to run.
-
 - **@RunWith(AndroidJUnit4::class)** - Used in any class using AndroidX Test.
+
+**AndroidX Test libraries** include classes and methods that provide you with versions of  components like Applications and Activities that are meant for tests.
 
 **FragmentScenario** is a class from AndroidX Test that gives you control over thr fragment's lifecycle for testing
 
@@ -61,8 +62,25 @@ Espresso helps you:
 
 **Statement parts**
 
+```kotlin
+onView(withId(R.id.task_detail_complete_checkbox)).perform(click()).check(matches(isChecked()))
+```
+
 - **Static Espresso method** starts an Espresso statement. For example "onView"
 - **ViewMatcher** a matcher that matches a view. E.g. "withId"
 - **ViewAction** is something that can be done to the view. E.g. "perform"
 - **ViewAssertion** check or assert something about the view. E.g. "check"
 
+### Testing Navigation
+
+Navigation is a complicated action, that don't result in a clear output or state change, only initializing a new Fragment. To test it we can assert that the right method (navigate) was called with the correct action parameter. For this we can use a mock test double.
+
+**Mockito** is a framework for making test doubles. While the word mock is used in the API and name, it is not for just making mocks. It can also make stubs and spies.
+
+To mock in Mockito, pass in the class you want to mock
+
+```Kotlin
+ val navController = mock(NavController::class.java)
+```
+
+Mockito's  **verify** method is what makes this a mock, you're able to confirm the mocked class called a specific method with a parameter
