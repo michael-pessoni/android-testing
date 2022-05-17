@@ -1,6 +1,23 @@
 # Tests
 
-[TOC]
+### Summary
+
+- [Writing tests name](###Writing tests name)
+- [Testing Pyramid](###Testing Pyramid)
+- [Automated tests categories](###Automated tests categories)
+- [Architecture and Testing](###Architecture and Testing)
+- [Test Doubles](###Test Doubles)
+  - [Fakes and Dependency Injection](####Fakes and Dependency Injection)
+- [Testing suspend functions](###Testing suspend functions)
+- [Testing UI with Espresso](###Testing UI with Espresso)
+  - [Launch and Test a Fragment](####Launch and Test a Fragment)
+  - [Espresso](####Espresso)
+- [Testing Navigation](###Testing Navigation)
+- [Testing Coroutines](###Testing Coroutines)
+  - [runBlockingTest](####runBlockingTest)
+  - [TestCoroutineDispatcher](####TestCoroutineDispatcher)
+
+
 
 ### Writing tests name
 
@@ -123,10 +140,12 @@ Testing asynchronous code can be difficult for some reasons. First is that async
 
 When testing asynchronous code, you need to make your code deterministic and provide synchronization mechanisms. You can use some tool as `runBlockingTest` and `runBlocking`, `TestCoroutineDispatcher`or pausing coroutine execution to test the state of the code at an exact place in time.
 
- ##### runBlockingTest 
+#### runBlockingTest 
 
 Look back in [Testing suspend functions](####Testing suspend functions). 
 Writing test doubles, use `runBlocking.`
 
-##### TestCoroutineDispatcher
+#### TestCoroutineDispatcher
+
+
 
