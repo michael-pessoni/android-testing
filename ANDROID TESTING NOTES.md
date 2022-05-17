@@ -1,5 +1,7 @@
 # Tests
 
+[TOC]
+
 ### Writing tests name
 
 ```
@@ -18,7 +20,7 @@ Three testing aspects in testing strategy:
 
 These aspects are usually related. For example, speed and fidelity, the faster the test, generally, the less fidelity, and vice versa. 
 
-#### Automated tests categories
+### Automated tests categories
 
 **Unit tests** Highly focused tests. Usually run on a single class or even a single method. They have low fidelity and are fast enough to run every time you change the code.
 
@@ -48,19 +50,21 @@ The solution for this cases is to use test doubles. A test double is a version o
 
 [`Testing on the Toilet: Know your test doubles`](https://testing.googleblog.com/2013/07/testing-on-toilet-know-your-test-doubles.html) 
 
-### Tests and Dependency Injection
+#### Fakes and Dependency Injection
 
 When you build fakes to replace dependencies you need to guarantee the fake is used only in the tests and the real class is used on production code. For this you need to provide these dependencies using a technique called dependency injection. 
 
-[`Dependency Injection guidance on Android`](https://medium.com/androiddevelopers/dependency-injection-guidance-on-android-ads-2019-b0b56d774bc2)
+[`Dependency Injection in Android`](https://developer.android.com/training/dependency-injection)
 
-### Coroutines and tests
+### Testing suspend functions
 
 Suspend functions will need to launch a coroutine to call it, and a coroutine scope for that. You can use `kotlinx-coroutines-test` library that is specifically meant for testing coroutines. 
 
 To run the tests with suspend functions you can use  function `runBlockingTest`. This function takes in a block of code and then runs this block of code in a  special coroutine context which runs synchronously and immediately,  meaning actions will occur in a deterministic order. This essentially  makes your coroutines run like non-coroutines, so it is meant for  testing code. You'll have to add `@ExperimentalCoroutinesApi` above your test class, once you're using an experimental coroutine api (`runBlockingTest`).
 
-### Launch and Test a Fragment
+### Testing UI with Espresso
+
+#### Launch and Test a Fragment
 
 Fragments are visual and make up  the user interface. Because of this, when testing them, it helps to  render them on a screen, as they would when the app is running. Thus  when testing fragments, you usually write instrumented tests, which live in the androidTest source set.
 
@@ -79,7 +83,7 @@ To write a fragment and view model integration test it's not possible to use con
 
 For this you can use ServiceLocator pattern that involves creating a singleton class called the "Service Locator", whose purpose is to provide dependencies, both for the regular and test code.
 
-### Testing UI with Espresso
+#### Espresso
 
 Espresso is a library that allows you to test state expectations, interactions and assertions clearly without the distraction of boilerplate content, custom infrastructure, or messy implementation details getting in the way.
 
@@ -112,3 +116,17 @@ To mock in Mockito, pass in the class you want to mock
 ```
 
 Mockito's  `verify` method is what makes this a mock, you're able to confirm the mocked class called a specific method with a parameter
+
+### Testing Coroutines
+
+Testing asynchronous code can be difficult for some reasons. First is that asynchronous code tends to be non-deterministic, which means that if the test runs two operations in parallel sometimes one task will finish first and sometimes the other one can finishes first. This can cause flaky tests (with inconsistent results). A second reason is that tests run on a testing thread. As your test runs code on different  threads, or makes new coroutines, this work is started asynchronously,  seperate from the test thread.  Meanwhile the test coroutine will keep executing instructions in  parallel. The test might finish before either of the fired-off tasks  finish. 
+
+When testing asynchronous code, you need to make your code deterministic and provide synchronization mechanisms. You can use some tool as `runBlockingTest` and `runBlocking`, `TestCoroutineDispatcher`or pausing coroutine execution to test the state of the code at an exact place in time.
+
+ ##### runBlockingTest 
+
+Look back in [Testing suspend functions](####Testing suspend functions). 
+Writing test doubles, use `runBlocking.`
+
+##### TestCoroutineDispatcher
+
