@@ -32,18 +32,46 @@ These aspects are usually related. For example, speed and fidelity, the faster t
 
 The ability to test the app is related with the app architecture. It's hard to create unit tests for a method which has all logic of the application. A good practice is to break the application logic in multiple methods an classes, making easier to test each method. Architecture is a good way to divide up and organize your code
 
+### Test Doubles
+
+The unit test should focus on a small part of the code and its behavior. This can be tricky because the class under test can depend on other classes, out of your test's scope. 
+
+The solution for this cases is to use test doubles. A test double is a version of a class crafted specifically for testing. It is meant to replace the real version of a class in tests.
+
+|   Types   | of Test Doubles                                              |
+| :-------: | ------------------------------------------------------------ |
+| **Fake**  | A test double that has a "working"  implementation of the class, but it's implemented in a way that makes it good for tests but unsuitable for production. |
+| **Mock**  | A test double that tracks which of  its methods were called. It then passes or fails a test depending on  whether it's methods were called correctly. |
+| **Stub**  | A test double that includes no logic and only returns what you program it to return. A `StubTaskRepository` could be programmed to return certain combinations of tasks from `getTasks` for example. |
+| **Dummy** | A test double that is passed around but not used, such as if you just need to provide it as a parameter. If you had a `NoOpTaskRepository`, it would just implement the `TaskRepository` with **no** code in any of the methods. |
+|  **Spy**  | A test double which also keeps tracks of some additional information; for example, if you made a `SpyTaskRepository`, it might keep track of the number of times the `addTask` method was called. |
+
+[`Testing on the Toilet: Know your test doubles`](https://testing.googleblog.com/2013/07/testing-on-toilet-know-your-test-doubles.html) 
+
+### Tests and Dependency Injection
+
+When you build fakes to replace dependencies you need to guarantee the fake is used only in the tests and the real class is used on production code. For this you need to provide these dependencies using a technique called dependency injection. 
+
+[`Dependency Injection guidance on Android`](https://medium.com/androiddevelopers/dependency-injection-guidance-on-android-ads-2019-b0b56d774bc2)
+
+### Coroutines and tests
+
+Suspend functions will need to launch a coroutine to call it, and a coroutine scope for that. You can use `kotlinx-coroutines-test` library that is specifically meant for testing coroutines. 
+
+To run the tests with suspend functions you can use  function `runBlockingTest`. This function takes in a block of code and then runs this block of code in a  special coroutine context which runs synchronously and immediately,  meaning actions will occur in a deterministic order. This essentially  makes your coroutines run like non-coroutines, so it is meant for  testing code. You'll have to add `@ExperimentalCoroutinesApi` above your test class, once you're using an experimental coroutine api (`runBlockingTest`).
+
 ### Launch and Test a Fragment
 
-Fragments are visual and make up  the user interface. Because of this, when testing them, it helps to  render them on a screen, as they would when the app is running. Thus  when testing fragments, you usually write instrumented tests, which live in the `androidTest` source set.
+Fragments are visual and make up  the user interface. Because of this, when testing them, it helps to  render them on a screen, as they would when the app is running. Thus  when testing fragments, you usually write instrumented tests, which live in the androidTest source set.
 
 **Annotations**
 
-- **@MediumTest** Marks the test as a "medium run-time" integration test (versus  @SmallTest unit tests and  @LargeTest end-to-end tests). This helps you group and choose which size of test to run.
-- **@RunWith(AndroidJUnit4::class)** - Used in any class using AndroidX Test.
+- `@MediumTest` Marks the test as a "medium run-time" integration test (versus  @SmallTest unit tests and  @LargeTest end-to-end tests). This helps you group and choose which size of test to run.
+- `@RunWith(AndroidJUnit4::class)` - Used in any class using AndroidX Test.
 
 **AndroidX Test libraries** include classes and methods that provide you with versions of  components like Applications and Activities that are meant for tests.
 
-**FragmentScenario** is a class from AndroidX Test that gives you control over thr fragment's lifecycle for testing
+**FragmentScenario** is a class from AndroidX Test that gives you control over the fragment's lifecycle for testing
 
 **ServiceLocator**
 
@@ -66,10 +94,10 @@ Espresso helps you:
 onView(withId(R.id.task_detail_complete_checkbox)).perform(click()).check(matches(isChecked()))
 ```
 
-- **Static Espresso method** starts an Espresso statement. For example "onView"
-- **ViewMatcher** a matcher that matches a view. E.g. "withId"
-- **ViewAction** is something that can be done to the view. E.g. "perform"
-- **ViewAssertion** check or assert something about the view. E.g. "check"
+- `Static Espresso method` starts an Espresso statement. For example "onView"
+- `ViewMatcher` a matcher that matches a view. E.g. "withId"
+- `ViewAction` is something that can be done to the view. E.g. "perform"
+- `ViewAssertion` check or assert something about the view. E.g. "check"
 
 ### Testing Navigation
 
@@ -83,4 +111,4 @@ To mock in Mockito, pass in the class you want to mock
  val navController = mock(NavController::class.java)
 ```
 
-Mockito's  **verify** method is what makes this a mock, you're able to confirm the mocked class called a specific method with a parameter
+Mockito's  `verify` method is what makes this a mock, you're able to confirm the mocked class called a specific method with a parameter
