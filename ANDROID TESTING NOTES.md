@@ -18,6 +18,7 @@
   - [TestCoroutineDispatcher](#testcoroutinedispatcher)
 - [Testing Error Handling](#testing-error-handling)
 - [Testing Room database](#testing-room-database)
+- [End-to-end tests](#end-to-end-tests)
 
 
 
@@ -184,4 +185,10 @@ First, you need to artificially cause the error situation. One way to do this is
 In general, make database tests instrumented tests, meaning they will be in the `androidTest` source set. This is because if you run these tests locally, they will  use whatever version of SQLite you have on your local machine, which  could be very different from the version of SQLite that ships with your  Android device.
 
 Create an in-memory database using  [`Room.inMemoryDatabaseBuilder`.](https://developer.android.com/reference/androidx/room/Room.html#inMemoryDatabaseBuilder(android.content.Context, java.lang.Class)) Normal databases are meant to persist. By comparison, an in-memory  database will be completely deleted once the process that created it is  killed, since it's never actually stored on disk. Always use and  in-memory database for your tests.
+
+### End-to-end tests
+
+End-to-end tests (E2E) test a combination of features working together. They test large portions of the app and simulate real usage.
+
+E2E tests start the app from the first screen, create an actual activity and repository and test multiple fragments working together. Espresso is an Android UI testing library commonly used to write end-to-end tests. 
 

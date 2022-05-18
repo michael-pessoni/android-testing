@@ -29,6 +29,7 @@ android {
     // Always show the result of every unit test when running via command line, even if it passes.
     testOptions.unitTests {
         includeAndroidResources = true
+        returnDefaultValues = true
     }
 
     packagingOptions {
@@ -88,6 +89,7 @@ dependencies {
     testImplementation "androidx.test.ext:junit:$androidXTestExtKotlinRunnerVersion"
 
     // AndroidX Test - Instrumented testing
+    implementation "androidx.test.espresso:espresso-idling-resource:$espressoVersion"
     androidTestImplementation "androidx.test.ext:junit:$androidXTestExtKotlinRunnerVersion"
     androidTestImplementation "androidx.test.espresso:espresso-core:$espressoVersion"
     androidTestImplementation "androidx.test.espresso:espresso-contrib:$espressoVersion"
