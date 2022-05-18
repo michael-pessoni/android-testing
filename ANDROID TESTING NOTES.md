@@ -2,21 +2,21 @@
 
 ### Summary
 
-- [Writing tests name](#Writing tests name)
-- [Testing Pyramid](#Testing Pyramid)
-- [Automated tests categories](#Automated tests categories)
-- [Architecture and Testing](#Architecture and Testing)
-- [Test Doubles](#Test Doubles)
-  - [Fakes and Dependency Injection](#Fakes and Dependency Injection)
-- [Testing suspend functions](#Testing suspend functions)
-- [Testing UI with Espresso](#Testing UI with Espresso)
-  - [Launch and Test a Fragment](#Launch and Test a Fragment)
-  - [Espresso](#Espresso)
-- [Testing Navigation](#Testing Navigation)
-- [Testing Coroutines](#Testing Coroutines)
-  - [runBlockingTest](#runBlockingTest)
-  - [TestCoroutineDispatcher](#TestCoroutineDispatcher)
-- [Testing Error Handling](#Testing Error Handling)
+- [Writing tests name](#writing-tests-name)
+- [Testing Pyramid](#testing-pyramid)
+- [Automated tests categories](#automated-tests-categories)
+- [Architecture and Testing](#architecture-and-Testing)
+- [Test Doubles](#test-doubles)
+  - [Fakes and Dependency Injection](#fakes-and-dependency-injection)
+- [Testing suspend functions](#testing-suspend-functions)
+- [Testing UI with Espresso](#testing-ui-with-espresso)
+  - [Launch and Test a Fragment](#launch-and-test-a-fragment)
+  - [Espresso](#espresso)
+- [Testing Navigation](#testing-navigation)
+- [Testing Coroutines](#testing-coroutines)
+  - [runBlockingTest](#runblockingtest)
+  - [TestCoroutineDispatcher](#testcoroutinedispatcher)
+- [Testing Error Handling](#testing-error-handling)
 
 
 
