@@ -2,20 +2,21 @@
 
 ### Summary
 
-- [Writing tests name](###Writing tests name)
-- [Testing Pyramid](###Testing Pyramid)
-- [Automated tests categories](###Automated tests categories)
-- [Architecture and Testing](###Architecture and Testing)
-- [Test Doubles](###Test Doubles)
-  - [Fakes and Dependency Injection](####Fakes and Dependency Injection)
-- [Testing suspend functions](###Testing suspend functions)
-- [Testing UI with Espresso](###Testing UI with Espresso)
-  - [Launch and Test a Fragment](####Launch and Test a Fragment)
-  - [Espresso](####Espresso)
-- [Testing Navigation](###Testing Navigation)
-- [Testing Coroutines](###Testing Coroutines)
-  - [runBlockingTest](####runBlockingTest)
-  - [TestCoroutineDispatcher](####TestCoroutineDispatcher)
+- [Writing tests name](#Writing tests name)
+- [Testing Pyramid](#Testing Pyramid)
+- [Automated tests categories](#Automated tests categories)
+- [Architecture and Testing](#Architecture and Testing)
+- [Test Doubles](#Test Doubles)
+  - [Fakes and Dependency Injection](#Fakes and Dependency Injection)
+- [Testing suspend functions](#Testing suspend functions)
+- [Testing UI with Espresso](#Testing UI with Espresso)
+  - [Launch and Test a Fragment](#Launch and Test a Fragment)
+  - [Espresso](#Espresso)
+- [Testing Navigation](#Testing Navigation)
+- [Testing Coroutines](#Testing Coroutines)
+  - [runBlockingTest](#runBlockingTest)
+  - [TestCoroutineDispatcher](#TestCoroutineDispatcher)
+- [Testing Error Handling](#Testing Error Handling)
 
 
 
@@ -136,13 +137,13 @@ Mockito's  `verify` method is what makes this a mock, you're able to confirm the
 
 ### Testing Coroutines
 
-Testing asynchronous code can be difficult for some reasons. First is that asynchronous code tends to be non-deterministic, which means that if the test runs two operations in parallel sometimes one task will finish first and sometimes the other one can finishes first. This can cause flaky tests (with inconsistent results). A second reason is that tests run on a testing thread. As your test runs code on different  threads, or makes new coroutines, this work is started asynchronously,  seperate from the test thread.  Meanwhile the test coroutine will keep executing instructions in  parallel. The test might finish before either of the fired-off tasks  finish. 
+Testing asynchronous code can be difficult for some reasons. First is that asynchronous code tends to be non-deterministic, which means that if the test runs two operations in parallel sometimes one task will finish first and sometimes the other one can finishes first. This can cause flaky tests (with inconsistent results). A second reason is that tests run on a testing thread. As your test runs code on different  threads, or makes new coroutines, this work is started asynchronously,  separate from the test thread.  Meanwhile the test coroutine will keep executing instructions in  parallel. The test might finish before either of the fired-off tasks  finish. 
 
 When testing asynchronous code, you need to make your code deterministic and provide synchronization mechanisms. You can use some tool as `runBlockingTest` and `runBlocking`, `TestCoroutineDispatcher`or pausing coroutine execution to test the state of the code at an exact place in time.
 
 #### runBlockingTest 
 
-Look back in [Testing suspend functions](####Testing suspend functions). 
+Look back in [Testing suspend functions](#Testing suspend functions). 
 Writing test doubles, use `runBlocking.`
 
 #### TestCoroutineDispatcher
@@ -169,5 +170,11 @@ fun tearDownDispatcher() {
 }
 ```
 
+The TestCoroutineDispatcher executes tasks immediately and completely, which means that before the assert statements are executed, the method you called has completely finished. In some cases you want to make an assertion in the middle of the execution, then you can use TestCoroutineDispatcher's `pauseDispatcher` and `resumeDispatcher`. When the dispatcher is paused any new coroutines are added to a queue  rather than being executed immediately. This means that code execution  inside the method will be paused *just before* the coroutine is launched, and then executed when resumeDispatcher is called.
 
+### Testing Error Handling
+
+In tests it's important also testing what your app does when it encounters errors, for example when the network is down and it can't load data. 
+
+First, you need to artificially cause the error situation. One way to do this is to update your test doubles so that you can "set" them to an  error state, using a flag. If the flag is `false`, the test double functions as normal. But if the flag is set to `true`, then the test double returns a realistic error; for example, it might return a failure to load data error. Then you can write tests for these error states.
 
