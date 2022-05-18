@@ -28,7 +28,7 @@ class TaskDetailFragmentTest{
     @Before
     fun initRepository() {
         repository = FakeAndroidTestRepository()
-        ServiceLocator.taskRepository = repository
+        ServiceLocator.tasksRepository = repository
     }
 
     @After

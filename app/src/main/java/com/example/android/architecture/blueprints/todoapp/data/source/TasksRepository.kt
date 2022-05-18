@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import com.example.android.architecture.blueprints.todoapp.data.Result
 import com.example.android.architecture.blueprints.todoapp.data.Task
 
-interface TaskRepository {
+interface TasksRepository {
     suspend fun getTasks(forceUpdate: Boolean = false): Result<List<Task>>
 
     suspend fun refreshTasks()

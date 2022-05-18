@@ -147,5 +147,27 @@ Writing test doubles, use `runBlocking.`
 
 #### TestCoroutineDispatcher
 
+All coroutines require a `CoroutineScope`that control the lifetimes of coroutines. On a view model you can use `viewModelScope`(Read more about [viewModelScope](https://medium.com/androiddevelopers/easy-coroutines-in-android-viewmodelscope-25bffb605471)) that returns a CoroutineScope associated with each view model. It uses `Dispatchers.Main`that uses Android's  [`Looper.getMainLooper()`](https://developer.android.com/reference/kotlin/android/os/Looper.html#getMainLooper()). The main looper is the execution loop for a real application. The main  looper is not available (by default) in local tests, because you're not  running the full application.
+
+To address this, use the method  `setMain()` (from `kotlinx.coroutines.test`) to modify `Dispatchers.Main` to use  [`TestCoroutineDispatcher`](https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-test/kotlinx.coroutines.test/-test-coroutine-dispatcher/index.html). `TestCoroutineDispatcher` is a dispatcher specifically meant for testing.
+
+```kotlin
+@ExperimentalCoroutinesApi
+val testDispatcher: TestCoroutineDispatcher = TestCoroutineDispatcher()
+
+@ExperimentalCoroutinesApi
+@Before
+fun setupDispatcher() {
+    Dispatchers.setMain(testDispatcher)
+}
+
+@ExperimentalCoroutinesApi
+@After
+fun tearDownDispatcher() {
+    Dispatchers.resetMain()
+    testDispatcher.cleanupTestCoroutines()
+}
+```
+
 
 

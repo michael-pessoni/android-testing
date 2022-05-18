@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.annotation.VisibleForTesting
 import androidx.room.Room
 import com.example.android.architecture.blueprints.todoapp.data.source.DefaultTasksRepository
-import com.example.android.architecture.blueprints.todoapp.data.source.TaskRepository
+import com.example.android.architecture.blueprints.todoapp.data.source.TasksRepository
 import com.example.android.architecture.blueprints.todoapp.data.source.local.TasksLocalDataSource
 import com.example.android.architecture.blueprints.todoapp.data.source.local.ToDoDatabase
 import com.example.android.architecture.blueprints.todoapp.data.source.remote.TasksRemoteDataSource
@@ -15,7 +15,7 @@ object ServiceLocator {
     private var database: ToDoDatabase? = null
 
     @Volatile
-    var taskRepository: TaskRepository? = null
+    var tasksRepository: TasksRepository? = null
         @VisibleForTesting set
 
     private val lock = Any()
@@ -31,20 +31,20 @@ object ServiceLocator {
                 close()
             }
             database = null
-            taskRepository = null
+            tasksRepository = null
         }
     }
 
-    fun provideTaskRepository(context: Context): TaskRepository {
+    fun provideTaskRepository(context: Context): TasksRepository {
         synchronized(this) {
-            return taskRepository ?: createTaskRepository(context)
+            return tasksRepository ?: createTaskRepository(context)
         }
     }
 
-    private fun createTaskRepository(context: Context): TaskRepository {
+    private fun createTaskRepository(context: Context): TasksRepository {
         val newRepository =
             DefaultTasksRepository(TasksRemoteDataSource, createTaskLocalDataSource(context))
-        taskRepository = newRepository
+        tasksRepository = newRepository
         return newRepository
     }
 

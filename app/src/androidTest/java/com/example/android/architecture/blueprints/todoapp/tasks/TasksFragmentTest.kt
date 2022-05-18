@@ -17,7 +17,7 @@ import com.example.android.architecture.blueprints.todoapp.FakeAndroidTestReposi
 import com.example.android.architecture.blueprints.todoapp.R
 import com.example.android.architecture.blueprints.todoapp.ServiceLocator
 import com.example.android.architecture.blueprints.todoapp.data.Task
-import com.example.android.architecture.blueprints.todoapp.data.source.TaskRepository
+import com.example.android.architecture.blueprints.todoapp.data.source.TasksRepository
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runBlockingTest
 import org.junit.After
@@ -32,12 +32,12 @@ import org.mockito.Mockito.verify
 @ExperimentalCoroutinesApi
 class TasksFragmentTest {
 
-    private lateinit var repository: TaskRepository
+    private lateinit var repository: TasksRepository
 
     @Before
     fun initRepository() {
         repository = FakeAndroidTestRepository()
-        ServiceLocator.taskRepository = repository
+        ServiceLocator.tasksRepository = repository
     }
     @After
     fun cleanupDb() {
