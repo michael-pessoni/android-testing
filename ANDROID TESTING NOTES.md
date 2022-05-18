@@ -17,6 +17,7 @@
   - [runBlockingTest](#runblockingtest)
   - [TestCoroutineDispatcher](#testcoroutinedispatcher)
 - [Testing Error Handling](#testing-error-handling)
+- [Testing Room database](#testing-room-database)
 
 
 
@@ -143,7 +144,7 @@ When testing asynchronous code, you need to make your code deterministic and pro
 
 #### runBlockingTest 
 
-Look back in [Testing suspend functions](#Testing suspend functions). 
+Look back in [Testing suspend functions](#testing-suspend-functions). 
 Writing test doubles, use `runBlocking.`
 
 #### TestCoroutineDispatcher
@@ -177,4 +178,10 @@ The TestCoroutineDispatcher executes tasks immediately and completely, which mea
 In tests it's important also testing what your app does when it encounters errors, for example when the network is down and it can't load data. 
 
 First, you need to artificially cause the error situation. One way to do this is to update your test doubles so that you can "set" them to an  error state, using a flag. If the flag is `false`, the test double functions as normal. But if the flag is set to `true`, then the test double returns a realistic error; for example, it might return a failure to load data error. Then you can write tests for these error states.
+
+### Testing Room database
+
+In general, make database tests instrumented tests, meaning they will be in the `androidTest` source set. This is because if you run these tests locally, they will  use whatever version of SQLite you have on your local machine, which  could be very different from the version of SQLite that ships with your  Android device.
+
+Create an in-memory database using  [`Room.inMemoryDatabaseBuilder`.](https://developer.android.com/reference/androidx/room/Room.html#inMemoryDatabaseBuilder(android.content.Context, java.lang.Class)) Normal databases are meant to persist. By comparison, an in-memory  database will be completely deleted once the process that created it is  killed, since it's never actually stored on disk. Always use and  in-memory database for your tests.
 
